@@ -1,12 +1,12 @@
 from django.shortcuts import redirect, render
-from .models import Product
+from .models import Product, Category
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from .forms import SignUpForm
-
+from django.http import Http404
 
 
 def home(request):
@@ -57,3 +57,29 @@ def register_user(request):
 def product(request, pk):
     product = Product.objects.get(id=pk)
     return render(request, 'product.html', {'product':product})
+
+
+# def category(request, cat):
+#     try:
+#         categories = Category.objects.all()
+#         category = Category.objects.get(slug=cat)
+#         products = Product.objects.filter(category=category)
+#         return render(request, 'category.html', {'products':products, 'category':category})
+#     except:
+#         messages.error(request, ("Categoria inexistente"))
+#         return redirect('home')
+
+def category(request, cat):
+    categories = Category.objects.all()  # aqui, sim, é uma lista
+    try:
+        category = Category.objects.get(slug=cat)  # aqui é só 1 item
+    except Category.DoesNotExist:
+        raise Http404(f"Categoria com slug '{cat}' não encontrada.")
+    
+    products = Product.objects.filter(category=category)
+    
+    return render(request, 'category.html', {
+        'products': products,
+        'category': category,
+        'categories': categories,  # <-- se quiser iterar no template
+    })
