@@ -18,12 +18,37 @@
                     {% endif %}
                     <p class="card-text"><small class="text-body-secondary">{{product.description}}</small></p>
                     <br/>
-                    <a href="#" class="btn btn-secondary">Adicionar ao carrinho</a>
+                    <button type="button" value="{{ product.id }}" id="add-cart" class="btn btn-secondary">Adicionar ao carrinho</button>
                 </div>
             </div>
         </div>
     </div>
     <br/><br/><br/>
 </div>
+
+<script>
+
+    $(document).on('click', '#add-cart', function(e){
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: '{% url 'cart_add' %}',
+            data: {
+                product_id: $('#add-cart').val(),
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                action: 'post'
+            },
+
+            success: function(json){
+                console.log(json)
+            },
+
+            error: function(xhr, errmsg, err){
+
+            }
+        });
+    })
+
+</script>
 
 {% endblock %}
