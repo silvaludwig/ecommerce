@@ -33,6 +33,9 @@
                 </div>
             </div>
         {% endfor %}
+        <div class="text-end">
+            <h3>Total: R${{ totals }}</h3>
+            <a href="{% url 'checkout' %}" class="btn btn-success">Finalizar Compra</a>
         {% else %}
             <div class="alert alert-warning" role="alert">
                 Seu carrinho está vazio! Adicione produtos para continuar.

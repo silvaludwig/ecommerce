@@ -37,3 +37,16 @@ class Cart():
             del self.cart[product_id]
 
         self.session.modified = True
+
+
+    def get_totals(self):
+        total = 0
+        for product_id in self.cart.keys():
+            try:
+                product = Product.objects.get(id=product_id)
+                price = product.sale_price if product.is_sale else product.price
+                total += float(price)
+            except Product.DoesNotExist:
+                continue
+        return total
+

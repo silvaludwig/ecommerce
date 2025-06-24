@@ -7,7 +7,8 @@ from django.http import JsonResponse
 def cart_summary(request):
     cart = Cart(request)
     cart_products = cart.get_prods()
-    return render(request, 'cart_summary.html', {'cart_products': cart_products, 'cart': cart})
+    totals = cart.get_totals()
+    return render(request, 'cart_summary.html', {'cart_products': cart_products, 'cart': cart, 'totals': totals})
 
 def cart_add(request):
     # Get the cart
@@ -40,4 +41,10 @@ def cart_delete(request):
 
 def cart_update(request):
     return render(request, 'cart_update.html', {})
+
+def checkout(request):
+    cart = Cart(request)
+    cart_products = cart.get_prods()
+    totals = cart.get_totals()
+    return render(request, 'checkout.html', {'cart_products': cart_products, 'cart': cart, 'totals': totals})
 
