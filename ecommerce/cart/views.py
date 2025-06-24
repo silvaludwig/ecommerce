@@ -41,4 +41,3 @@ def cart_delete(request):
 def cart_update(request):
     return render(request, 'cart_update.html', {})
 
-

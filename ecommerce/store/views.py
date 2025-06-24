@@ -83,3 +83,9 @@ def category(request, cat):
         'category': category,
         'categories': categories,  # <-- se quiser iterar no template
     })
+
+def all_products(request):
+    products = Product.objects.all()
+    return render(request, 'all_products.html', {'products': products})
+
+
