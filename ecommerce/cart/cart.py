@@ -29,3 +29,11 @@ class Cart():
         product_ids = self.cart.keys()
         products = Product.objects.filter(id__in=product_ids)
         return products
+    
+    def delete(self, product):
+        product_id = str(product.id)
+
+        if product_id in self.cart:
+            del self.cart[product_id]
+
+        self.session.modified = True

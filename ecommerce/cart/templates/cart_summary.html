@@ -28,6 +28,7 @@
                             <p class="card-text"><small class="text-body-secondary">{{product.description}}</small></p>
                             <br/>
                         </div>
+                        <button type="button" data-index="{{product.id}}" class="btn btn-danger delete-item">Remover do carrinho</button>
                     </div>
                 </div>
             </div>
@@ -39,4 +40,25 @@
         {% endif %}
     </div>
         <br/><br/><br/>
+
+    <script>
+        $(document).on('click', '.delete-item', function() {
+            var productId = $(this).data('index');
+            $.ajax({
+                url: '{% url 'cart_delete'%}',
+                type: 'POST',
+                data: {
+                    product_id: $(this).data('index'),
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                    action: 'post'
+                },
+                success: function(json) {
+                    location.reload();
+                },
+                error: function(xhr, status, error) {
+                    alert('Erro ao remover o item do carrinho.');
+                }
+            });
+        });
+    </script>
 {% endblock %}

@@ -28,7 +28,15 @@ def cart_add(request):
     return render(request, 'cart_add.html', {})
 
 def cart_delete(request):
-    return render(request, 'cart_delete.html', {})
+    cart = Cart(request)
+    if request.POST.get('action') == 'post':
+        product_id = int(request.POST.get('product_id'))
+        product = get_object_or_404(Product, id=product_id)
+        cart.delete(product=product)
+        cart_quantity = cart.__len__()
+        response = JsonResponse({'quantity': cart_quantity})
+        return response
+
 
 def cart_update(request):
     return render(request, 'cart_update.html', {})
